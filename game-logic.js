@@ -4,12 +4,27 @@ const choices = {
     scissors: "scissors"
 }
 
-getComputerChoice()
+getHumanChoice()
+
+function getHumanChoice() {
+    do {
+        const choice = prompt("Write your option: rock, paper, scissors")
+        switch (choice) {
+            case "rock":
+                return choices.rock
+            case "paper":
+                return choices.paper
+            case "scissors":
+                return choices.scissors
+        } 
+    } while (true);
+    
+}
 
 function getComputerChoice() {
-    const randomChoice = getRandomInt(Object.keys(choices).length)
-    console.log(randomChoice)
-    console.log(Object.keys(choices)[randomChoice])
+    const choicesKeys = Object.keys(choices)
+    const randomChoice = getRandomInt(choicesKeys.length)
+    return choicesKeys[randomChoice]
 }
 
 function getRandomInt(max) {

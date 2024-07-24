@@ -4,7 +4,8 @@ const choices = {
     scissors: "scissors"
 }
 
-getHumanChoice()
+let humanScore = 0
+let comuterScore = 0
 
 function getHumanChoice() {
     do {

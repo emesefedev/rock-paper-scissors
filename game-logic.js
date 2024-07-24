@@ -7,15 +7,50 @@ const choices = {
 let humanScore = 0
 let computerScore = 0
 
-game()
+playGame()
 
-function game() {
-    const humanChoice = getHumanChoice()
-    const computerChoice = getComputerChoice()
+function playGame() {
+    const totalRounds = 5
 
-    playRound(humanChoice, computerChoice)
+    for (let i = 1; i <= totalRounds; i++) {
+        console.log(`ROUND ${i}`)
+        console.log(`Human: ${humanScore}, Computer: ${computerScore}`)
 
-    console.log(`H: ${humanScore}, C: ${computerScore}`)
+        const humanChoice = getHumanChoice()
+        const computerChoice = getComputerChoice()
+
+        playRound(humanChoice, computerChoice)
+        console.log("\n\n")   
+    }
+
+    console.log("GAME OVER")
+    let finalMessage = ""
+
+    if (humanScore === computerScore) {
+        finalMessage = `It's a draw: ${humanScore} - ${computerScore}`
+    } else if (humanScore > computerScore) {
+        finalMessage = `YOU WIN!!! ${humanScore} - ${computerScore}`
+    } else {
+        finalMessage = `Better luck next time... You lost ${humanScore} - ${computerScore}`
+    }
+
+    alert(finalMessage)
+    
+}
+
+function youLose(humanChoice, computerChoice)
+{
+    computerScore++
+    return `You lose! ${computerChoice} beats ${humanChoice} :(`
+}
+
+function youWin(humanChoice, computerChoice) {
+    humanScore++
+    return `You win! ${humanChoice} beats ${computerChoice} :)`
+}
+
+function draw() {
+    return `Draw! :|`
 }
 
 function playRound(humanChoice, computerChoice) {
@@ -24,46 +59,39 @@ function playRound(humanChoice, computerChoice) {
         case "rock":
             switch (computerChoice) {
                 case "paper":
-                    computerScore++
-                    message = `You lose! ${computerChoice} beats ${humanChoice} :(`
+                    message = youLose(humanChoice, computerChoice)
                     break
                 case "scissors":
-                    humanScore++
-                    message = `You win! ${humanChoice} beats ${computerChoice} :)`
+                    message = youWin(humanChoice, computerChoice)
                     break
                 default:
-                    message = `Draw! :|`
-                    break
+                    message = draw()
             }
             break
+
         case "paper":
             switch (computerChoice) {
                 case "rock":
-                    humanScore++
-                    message = `You win! ${humanChoice} beats ${computerChoice} :)`
+                    message = youWin(humanChoice, computerChoice)
                     break
                 case "scissors":
-                    computerScore++
-                    message = `You lose! ${computerChoice} beats ${humanChoice} :(`
+                    message = youLose(humanChoice, computerChoice)
                     break
                 default:
-                    message = `Draw! :|`
-                    break
+                    message = draw()
             }
             break
+
         case "scissors":
             switch (computerChoice) {
                 case "rock":
-                    computerScore++
-                    message = `You lose! ${computerChoice} beats ${humanChoice} :(`
+                    message = youLose(humanChoice, computerChoice)
                     break
                 case "paper":
-                    humanScore++
-                    message = `You win! ${humanChoice} beats ${computerChoice} :)`
+                    message = youWin(humanChoice, computerChoice)
                     break
                 default:
-                    message = `Draw! :|`
-                    break
+                    message = draw()
             }
             break     
     }
@@ -78,17 +106,12 @@ function getHumanChoice() {
 
     do {
         const choice = prompt(message)
-        switch (choice.toLocaleLowerCase()) {
-            case "rock":
-                humanChoice = choices.rock
-                isValidChoice = true
-                break
-            case "paper":
-                humanChoice = choices.paper
-                isValidChoice = true
-                break
-            case "scissors":
-                humanChoice = choices.scissors
+        humanChoice = choice.toLocaleLowerCase()
+
+        switch (humanChoice) {
+            case choices.rock:
+            case choices.paper:
+            case choices.scissors:
                 isValidChoice = true
                 break
             default:

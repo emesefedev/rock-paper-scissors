@@ -1,3 +1,5 @@
+const MAX_SCORE = 5
+
 const choices = {
     rock: "rock",
     paper: "paper",
@@ -7,36 +9,22 @@ const choices = {
 let humanScore = 0
 let computerScore = 0
 
-playGame()
+let isGameOver = false
 
-function playGame() {
-    const totalRounds = 5
+const rockButton = document.querySelector("#rock-button")
+const paperButton = document.querySelector("#paper-button")
+const scissorsButton = document.querySelector("#scissors-button")
 
-    for (let i = 1; i <= totalRounds; i++) {
-        console.log(`ROUND ${i}`)
-        console.log(`Human: ${humanScore}, Computer: ${computerScore}`)
+const messageText = document.querySelector("#message")
+const scoreText = document.querySelector("#score")
 
-        const humanChoice = getHumanChoice()
-        const computerChoice = getComputerChoice()
+rockButton.addEventListener("click", () => playRound("rock"))
+paperButton.addEventListener("click", () => playRound("paper"))
+scissorsButton.addEventListener("click", () => playRound("scissors"))
 
-        playRound(humanChoice, computerChoice)
-        console.log("\n\n")   
-    }
+messageText.textContent = ""
+scoreText.textContent = ""
 
-    console.log("GAME OVER")
-    let finalMessage = ""
-
-    if (humanScore === computerScore) {
-        finalMessage = `It's a draw: ${humanScore} - ${computerScore}`
-    } else if (humanScore > computerScore) {
-        finalMessage = `YOU WIN!!! ${humanScore} - ${computerScore}`
-    } else {
-        finalMessage = `Better luck next time... You lost ${humanScore} - ${computerScore}`
-    }
-
-    alert(finalMessage)
-    
-}
 
 function youLose(humanChoice, computerChoice)
 {
@@ -53,8 +41,31 @@ function draw() {
     return `Draw! :|`
 }
 
-function playRound(humanChoice, computerChoice) {
+function playRound(humanChoice) {
+    if (!isGameOver) {
+        const computerChoice = getComputerChoice()
+        const message = getRoundWinnerMessage(humanChoice, computerChoice)
+
+        displayMessage(message)
+        displayScore()
+
+        checkGameOver()
+    }
+    else {
+        displayMessage("In order to play again, press Cmd + R")
+    }
+}
+
+function checkGameOver() {
+    if (humanScore >= MAX_SCORE || computerScore >= MAX_SCORE) {
+        isGameOver = true
+        displayGameOverMessage()
+    }
+}
+
+function getRoundWinnerMessage(humanChoice, computerChoice) {
     let message = ""
+    
     switch (humanChoice) {
         case "rock":
             switch (computerChoice) {
@@ -95,7 +106,30 @@ function playRound(humanChoice, computerChoice) {
             }
             break     
     }
-    console.log(message)
+    
+    return message
+}
+
+function displayMessage(message) {
+    messageText.textContent = message
+}
+
+function displayScore() {
+    const message = `You: ${humanScore} - Computer: ${computerScore}`
+    scoreText.textContent = message
+}
+
+function displayGameOverMessage () {
+    let message = ""
+    
+    if (humanScore > computerScore) {
+        message = `You won!`
+    } 
+    else {
+        message = `You lost!\nBetter luck next time..`
+    }
+
+    displayMessage(message)
 }
 
 function getHumanChoice() {

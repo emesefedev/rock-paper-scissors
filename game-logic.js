@@ -59,6 +59,7 @@ function playRound(humanChoice) {
 function checkGameOver() {
     if (humanScore >= MAX_SCORE || computerScore >= MAX_SCORE) {
         isGameOver = true
+        messageText.classList.toggle("game-over");
         displayGameOverMessage()
     }
 }

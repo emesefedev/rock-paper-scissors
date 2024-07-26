@@ -1,3 +1,8 @@
+window.addEventListener('load', () => {
+    console.log('load')
+    game()
+})
+
 const MAX_SCORE = 5
 
 const choices = {
@@ -11,20 +16,27 @@ let computerScore = 0
 
 let isGameOver = false
 
-const rockButton = document.querySelector("#rock-button")
-const paperButton = document.querySelector("#paper-button")
-const scissorsButton = document.querySelector("#scissors-button")
+let rockButton = null
+let paperButton = null
+let scissorsButton = null
+let messageText = null
+let scoreText = null
 
-const messageText = document.querySelector("#message")
-const scoreText = document.querySelector("#score")
+function game() {
+    rockButton = document.querySelector("#rock-button")
+    paperButton = document.querySelector("#paper-button")
+    scissorsButton = document.querySelector("#scissors-button")
 
-rockButton.addEventListener("click", () => playRound("rock"))
-paperButton.addEventListener("click", () => playRound("paper"))
-scissorsButton.addEventListener("click", () => playRound("scissors"))
+    messageText = document.querySelector("#message")
+    scoreText = document.querySelector("#score")
 
-messageText.textContent = ""
-scoreText.textContent = ""
+    rockButton.addEventListener("click", () => playRound("rock"))
+    paperButton.addEventListener("click", () => playRound("paper"))
+    scissorsButton.addEventListener("click", () => playRound("scissors"))
 
+    messageText.textContent = ""
+    scoreText.textContent = ""
+}
 
 function youLose(humanChoice, computerChoice)
 {
@@ -59,8 +71,12 @@ function playRound(humanChoice) {
 function checkGameOver() {
     if (humanScore >= MAX_SCORE || computerScore >= MAX_SCORE) {
         isGameOver = true
-        messageText.classList.add("game-over");
         displayGameOverMessage()
+    }
+    if(isGameOver) {
+        messageText.classList.add("game-over");
+    } else {
+        messageText.classList.remove("game-over")
     }
 }
 
